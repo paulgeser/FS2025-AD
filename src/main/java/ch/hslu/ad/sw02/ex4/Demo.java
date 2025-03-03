@@ -8,7 +8,6 @@ public class Demo {
 
     private static final Logger LOG = LoggerFactory.getLogger(Demo.class);
 
-
     public static void main(String[] args) {
         Queue q = new Queue();
         LOG.info("Head is currently at '{}' of full queue: {}", q.checkNextItem(), q.toString());
