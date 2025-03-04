@@ -1,12 +1,16 @@
-package ch.hslu.ad.sw03;
+package ch.hslu.ad.sw03.ex7;
 
-import ch.hslu.ad.sw02.ex4.Demo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Musste ziemlich nichts geändert werden, da schon in EX5 der Baum vollkommen generisch implementiert wurde.
+ *
+ * @param <T>
+ */
 public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchTree<T> {
 
     private Node<T> root = null;
@@ -21,6 +25,9 @@ public class BinarySearchTree<T extends Comparable<T>> implements IBinarySearchT
     }
 
     private Node<T> insertRecursive(Node<T> node, T value) {
+        if (contains(value)) {
+            throw new IllegalArgumentException("Value already exists");
+        }
         if (node == null) {
             return new Node<T>(value);
         }

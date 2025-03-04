@@ -1,4 +1,4 @@
-package ch.hslu.ad.sw03;
+package ch.hslu.ad.sw03.ex7;
 
 public class Node<T> {
 
@@ -8,6 +8,10 @@ public class Node<T> {
 
     public Node(T data) {
         this.data = data;
+    }
+
+    public Node() {
+        this.data = null;
     }
 
     public T getData() {

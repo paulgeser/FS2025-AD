@@ -1,4 +1,4 @@
-package ch.hslu.ad.sw03;
+package ch.hslu.ad.sw03.ex7;
 
 import java.util.List;
 
