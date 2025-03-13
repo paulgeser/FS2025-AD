@@ -209,6 +209,11 @@
                 <version>1.0.3</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections</artifactId>
+                <version>11.1.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -216,6 +221,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.collections</groupId>
+            <artifactId>eclipse-collections</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
