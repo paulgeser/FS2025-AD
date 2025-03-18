@@ -120,4 +120,21 @@ class HashSetTest {
         assertTrue(result);
         assertEquals(1, hashSet.size());
     }
+
+    @Test
+    void testRemoveCollision2HashSet() {
+        // arrange
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("Hello there");
+        hashSet.add("Wow crazy");
+        assertEquals(2, hashSet.size());
+
+        // act
+        boolean result = hashSet.remove("Hello there");
+
+        // assert
+        assertTrue(result);
+        assertEquals(1, hashSet.size());
+        assertTrue(hashSet.contains("Wow crazy"));
+    }
 }

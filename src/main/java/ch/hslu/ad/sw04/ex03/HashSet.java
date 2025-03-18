@@ -25,16 +25,43 @@ public class HashSet<T> implements IHashSet<T> {
 
     @Override
     public boolean remove(T object) {
-        int index = Math.abs(object.hashCode() % SIZE);
+        final int objectHashCode = object.hashCode();
+        int index = Math.abs(objectHashCode % SIZE);
         boolean deleted = false;
+        // Delete entry
         while (data[index] != null) {
-            if (data[index].equals(object)) {
+            if (data[index].hashCode() == objectHashCode && data[index].equals(object)) {
                 data[index] = null;
                 currentSize--;
                 deleted = true;
                 break;
             }
             index = (index + 1) % SIZE;
+        }
+
+        // Rotate values
+        if (deleted) {
+            index = Math.abs(objectHashCode % SIZE);
+            boolean emptySlotPossible = true;
+            while (emptySlotPossible) {
+                if (data[index] == null) {
+                    emptySlotPossible = false;
+                    if (data[(index + 1) % SIZE] == null) {
+                        break;
+                    }
+                    int nextItemHashPlace = data[(index + 1) % SIZE].hashCode() % SIZE;
+                    if (nextItemHashPlace == (objectHashCode % SIZE)) {
+                        data[index] = data[(index + 1) % SIZE];
+                        data[(index + 1) % SIZE] = null;
+                        emptySlotPossible = true;
+                    }
+                } else if (data[index].hashCode() == objectHashCode) {
+                    continue;
+                } else {
+                    break;
+                }
+                index = (index + 1) % SIZE;
+            }
         }
         return deleted;
     }
