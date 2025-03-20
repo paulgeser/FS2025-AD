@@ -53,9 +53,6 @@ public class HashSet<T> implements IHashSet<T> {
     public boolean contains(T object) {
         int index = Math.abs(object.hashCode()) % SIZE;
         boolean found = false;
-        if (data[index] == null) {
-            return false;
-        }
         Node<T> element = data[index];
         while (element != null) {
             if (element.getData().equals(object)) {
