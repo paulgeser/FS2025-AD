@@ -10,7 +10,7 @@ public class HashSet<T> implements IHashSet<T> {
     @Override
     public boolean add(T object) {
         if (!contains(object)) {
-            int index = Math.abs(object.hashCode() % SIZE);
+            int index = Math.abs(object.hashCode()) % SIZE;
             data[index] = object;
             return true;
         }
@@ -19,7 +19,7 @@ public class HashSet<T> implements IHashSet<T> {
 
     @Override
     public boolean remove(T object) {
-        int index = Math.abs(object.hashCode() % SIZE);
+        int index = Math.abs(object.hashCode()) % SIZE;
         if (data[index] != null && data[index].equals(object)) {
             data[index] = null;
             return true;
@@ -29,7 +29,7 @@ public class HashSet<T> implements IHashSet<T> {
 
     @Override
     public boolean contains(T object) {
-        int index = Math.abs(object.hashCode() % SIZE);
+        int index = Math.abs(object.hashCode()) % SIZE;
         if (data[index] != null && data[index].equals(object)) {
             return true;
         }
@@ -60,6 +60,6 @@ public class HashSet<T> implements IHashSet<T> {
         System.out.println(text4 + ": :" + hashCod4 % SIZE);
         set.add(text4);
 
-        System.out.println(set.toString());
+        System.out.println(set);
     }
 }

@@ -121,5 +121,4 @@ class HashSetTest {
         assertTrue(result);
         assertEquals(1, hashSet.size());
     }
-
 }

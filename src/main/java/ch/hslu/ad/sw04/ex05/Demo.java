@@ -15,7 +15,6 @@ public class Demo {
     private static final Logger LOG = LoggerFactory.getLogger(Demo.class);
 
     public static void main(String[] args) {
-        System.currentTimeMillis();
         LOG.info("Starting with test cases");
         LOG.info("_________________________");
         final int itemAmountTest1 = 100000;

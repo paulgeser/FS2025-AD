@@ -13,12 +13,8 @@ public class HashSet<T> implements IHashSet<T> {
     @Override
     public boolean add(T object) {
         if (!contains(object) && currentSize != SIZE) {
-            int index = Math.abs(object.hashCode() % SIZE);
-            if (data[index] == null) {
-                data[index] = new Node<>(null, object);
-            } else {
-                data[index] = new Node<>(data[index], object);
-            }
+            int index = Math.abs(object.hashCode()) % SIZE;
+            data[index] = new Node<>(data[index], object);
             currentSize++;
             return true;
         }
@@ -27,7 +23,7 @@ public class HashSet<T> implements IHashSet<T> {
 
     @Override
     public boolean remove(T object) {
-        int index = Math.abs(object.hashCode() % SIZE);
+        int index = Math.abs(object.hashCode()) % SIZE;
         boolean deleted = false;
         if (data[index] == null) {
             return false;
@@ -55,7 +51,7 @@ public class HashSet<T> implements IHashSet<T> {
 
     @Override
     public boolean contains(T object) {
-        int index = Math.abs(object.hashCode() % SIZE);
+        int index = Math.abs(object.hashCode()) % SIZE;
         boolean found = false;
         if (data[index] == null) {
             return false;
@@ -83,27 +79,5 @@ public class HashSet<T> implements IHashSet<T> {
 
     public boolean full() {
         return this.currentSize == SIZE;
-    }
-
-    public static void main(String[] args) {
-        HashSet<String> set = new HashSet<>();
-        String text1 = "Hello";
-        int hashCod1 = text1.hashCode();
-        System.out.println(text1 + ": :" + hashCod1 % SIZE);
-        set.add(text1);
-        String text2 = "Cool stuff";
-        int hashCod2 = text2.hashCode();
-        System.out.println(text2 + ": :" + hashCod2 % SIZE);
-        set.add(text2);
-        String text3 = "Wow crazy";
-        int hashCod3 = text3.hashCode();
-        System.out.println(text3 + ": :" + hashCod3 % SIZE);
-        set.add(text3);
-        String text4 = "HSLU";
-        int hashCod4 = text4.hashCode();
-        System.out.println(text4 + ": :" + hashCod4 % SIZE);
-        set.add(text4);
-        System.out.println(set.size());
-        System.out.println(set.toString());
     }
 }
