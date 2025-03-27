@@ -30,13 +30,21 @@ public final class DemoWaitPool {
 
     /**
      * Main-Demo.
+     *
      * @param args not used.
      * @throws InterruptedException wenn das warten unterbrochen wird.
      */
     public static void main(final String args[]) throws InterruptedException {
+        // Neuen Task erstellen (mit Lock)
         final MyTask waiter = new MyTask(LOCK);
+        // Starte neuen Task in Thread
         new Thread(waiter).start();
+        // Pausiere aktuellen Thread für 1sek
         Thread.sleep(1000);
-        LOCK.notify();
+        // Wenn das übergebene Lock wieder frei ist
+        synchronized (LOCK) {
+            // Alle informieren, welche auch an dem Lock hängen
+            LOCK.notifyAll();
+        }
     }
 }

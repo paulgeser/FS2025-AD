@@ -37,14 +37,17 @@ public final class MyTask implements Runnable {
     @Override
     public void run() {
         LOG.info("warten...");
+        // Warten bis das Lock erhalten wurde
         synchronized (lock) {
             try {
-                wait();
+                // Geht nun in den Wait Pool bis ein Notify kommt, gibt dabei aber das Lock ab
+                lock.wait();
             } catch (InterruptedException ex) {
                 /* Exception handling... */
                 return;
             }
         }
+        // Wenn das Wait durch ein Notify aufgerufen wurde
         LOG.info("...aufgewacht");
     }
 }

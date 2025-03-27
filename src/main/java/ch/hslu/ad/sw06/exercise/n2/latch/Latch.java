@@ -22,20 +22,29 @@ package ch.hslu.ad.sw06.exercise.n2.latch;
  */
 public final class Latch implements Synch {
 
+    private static final Object LOCK = new Object();
+    private boolean isReleased = false;
+
     /**
      * Erzeugt ein Latch.
      */
     public Latch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void acquire() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        synchronized (LOCK) {
+            while (!this.isReleased) {
+                LOCK.wait();
+            }
+        }
     }
 
     @Override
     public void release() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        synchronized (LOCK) {
+            this.isReleased = true;
+            LOCK.notifyAll();
+        }
     }
 }
