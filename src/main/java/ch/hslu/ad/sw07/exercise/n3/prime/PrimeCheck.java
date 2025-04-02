@@ -17,6 +17,12 @@ package ch.hslu.ad.sw07.exercise.n3.prime;
 
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -26,6 +32,8 @@ import org.slf4j.Logger;
 public final class PrimeCheck {
 
     private static final Logger LOG = LoggerFactory.getLogger(PrimeCheck.class);
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private static final int numberOfThreads = Runtime.getRuntime().availableProcessors();
 
     /**
      * Privater Konstruktor.
@@ -39,12 +47,29 @@ public final class PrimeCheck {
      * @param args not used.
      */
     public static void main(String[] args) {
-        int n = 1;
-        while (n <= 100) {
-            BigInteger bi = new BigInteger(1024, new Random());
-            if (bi.isProbablePrime(Integer.MAX_VALUE)) {
-                LOG.info("{} : {}...", n, bi.toString().substring(0, 20));
-                n++;
+        final Callable<Boolean> primeTask = () -> {
+            boolean foundPrime = false;
+            while (!foundPrime) {
+                BigInteger bi = new BigInteger(1024, new Random());
+                if (bi.isProbablePrime(Integer.MAX_VALUE)) {
+                    count.getAndIncrement();
+                    foundPrime = true;
+                    LOG.info("Found prime number ({})", count.get());
+                }
+            }
+            return true;
+        };
+
+        final int wantedPrimeNumbers = 100;
+        while (count.get() < wantedPrimeNumbers) {
+            try (final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads)) {
+
+                for (int i = 0; i < wantedPrimeNumbers - count.get(); i++) {
+                    executor.submit(primeTask);
+                }
+
+                LOG.info("{}", count.get());
+                executor.shutdown();
             }
         }
     }
