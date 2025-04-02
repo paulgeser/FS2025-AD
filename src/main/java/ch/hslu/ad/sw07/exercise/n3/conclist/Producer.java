@@ -16,6 +16,7 @@
 package ch.hslu.ad.sw07.exercise.n3.conclist;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
@@ -25,6 +26,7 @@ import java.util.concurrent.Callable;
 public final class Producer implements Callable<Long> {
 
     private final List<Integer> list;
+    private final BlockingQueue<Integer> queue;
     private final int maxRange;
 
     /**
@@ -32,11 +34,18 @@ public final class Producer implements Callable<Long> {
      * produziert.
      *
      * @param list Queue zum Speichern der Integer-Werte.
-     * @param max Anzahl Integer-Werte.
+     * @param max  Anzahl Integer-Werte.
      */
     public Producer(final List<Integer> list, final int max) {
         this.list = list;
         this.maxRange = max;
+        this.queue = null;
+    }
+
+    public Producer(final BlockingQueue<Integer> list, final int max) {
+        this.list = null;
+        this.maxRange = max;
+        this.queue = list;
     }
 
     /**
@@ -47,11 +56,22 @@ public final class Producer implements Callable<Long> {
      */
     @Override
     public Long call() throws Exception {
-        long sum = 0;
-        for (int i = 0; i < maxRange; i++) {
-            sum += i;
-            list.add(i);
+        if (list != null) {
+            long sum = 0;
+            for (int i = 0; i < maxRange; i++) {
+                sum += i;
+                list.add(i);
+            }
+            return sum;
+        } else if (queue != null) {
+            long sum = 0;
+            for (int i = 0; i < maxRange; i++) {
+                sum += i;
+                queue.add(i);
+            }
+            return sum;
         }
-        return sum;
+        throw new RuntimeException("Neither a list or queue exists!");
     }
+
 }

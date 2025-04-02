@@ -17,6 +17,7 @@ package ch.hslu.ad.sw07.exercise.n3.conclist;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
@@ -25,6 +26,7 @@ import java.util.concurrent.Callable;
 public final class Consumer implements Callable<Long> {
 
     private final List<Integer> list;
+    private final BlockingQueue<Integer> queue;
 
     /**
      * Erzeugt einen Konsumenten, der soviel Integer-Werte ausliest, wie er nur
@@ -34,7 +36,14 @@ public final class Consumer implements Callable<Long> {
      */
     public Consumer(final List<Integer> list) {
         this.list = list;
+        this.queue = null;
     }
+
+    public Consumer(final BlockingQueue<Integer> queue) {
+        this.list = null;
+        this.queue = queue;
+    }
+
 
     /**
      * Liefert die Summe aller ausgelesener Werte.
@@ -44,11 +53,21 @@ public final class Consumer implements Callable<Long> {
      */
     @Override
     public Long call() throws Exception {
-        long sum = 0;
-        Iterator<Integer> iterable = list.iterator();
-        while (iterable.hasNext()) {
-            sum += iterable.next();
+        if (list != null) {
+            long sum = 0;
+            Iterator<Integer> iterable = list.iterator();
+            while (iterable.hasNext()) {
+                sum += iterable.next();
+            }
+            return sum;
+        } else if (queue != null) {
+            long sum = 0;
+            Iterator<Integer> iterable = queue.iterator();
+            while (iterable.hasNext()) {
+                sum += iterable.next();
+            }
+            return sum;
         }
-        return sum;
+        throw new RuntimeException("Neither a list or queue exists!");
     }
 }
