@@ -15,8 +15,8 @@
  */
 package ch.hslu.ad.sw07.exercise.n3.count;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -37,19 +37,27 @@ public final class SpeedCount {
      * Test für einen Counter.
      *
      * @param counter Zählertyp.
-     * @param counts Anzahl Zähl-Vorgänge.
+     * @param counts  Anzahl Zähl-Vorgänge.
      * @param threads Anzahl Tester-Threads.
      * @return Dauer des Tests in mSec.
      */
     public static long speedTest(Counter counter, int counts, int threads) {
         try (final ExecutorService executor = Executors.newCachedThreadPool()) {
+            long executionTime = 0L;
+
             for (int i = 0; i < threads; i++) {
-                executor.submit(new CountTask(counter, counts));
+                long startTime = System.nanoTime();
+                Future<Integer> task = executor.submit(new CountTask(counter, counts));
+                task.get();
+                long endTime = System.nanoTime();
+                executionTime += (endTime - startTime) / 1000000L;
             }
-            long duration = -1L;
-            return duration;
+            return executionTime;
+        } catch (ExecutionException | InterruptedException executionException) {
+            LOG.error(executionException.toString());
+            throw new RuntimeException(executionException);
         } finally {
-            // Executor shutdown
+            // shutdown executor
         }
     }
 
@@ -59,9 +67,9 @@ public final class SpeedCount {
      * @param args not used.
      */
     public static void main(final String args[]) {
-        final int passes = 1;
-        final int threads = 1;
-        final int counts = 1_000;
+        final int passes = 10;
+        final int threads = Runtime.getRuntime().availableProcessors();
+        final int counts = 1_000_000;
         final Counter counterSync = new SynchronizedCounter();
         long sumSync = 0;
         for (int i = 0; i < passes; i++) {
