@@ -67,18 +67,26 @@ public final class SpeedCount {
      * @param args not used.
      */
     public static void main(final String args[]) {
-        final int passes = 10;
+        final int passes = 100;
         final int threads = Runtime.getRuntime().availableProcessors();
         final int counts = 1_000_000;
         final Counter counterSync = new SynchronizedCounter();
         long sumSync = 0;
         for (int i = 0; i < passes; i++) {
-            sumSync += speedTest(counterSync, counts, threads);
+            long time = speedTest(counterSync, counts, threads);
+            // not count first run
+            if (i != 0) {
+                sumSync += time;
+            }
         }
         final Counter counterAtom = new AtomicCounter();
         long sumAtom = 0;
         for (int i = 0; i < passes; i++) {
-            sumAtom += speedTest(counterAtom, counts, threads);
+            long time = speedTest(counterAtom, counts, threads);
+            // not count first run
+            if (i != 0) {
+                sumAtom += time;
+            }
         }
         if (counterSync.get() == 0) {
             LOG.info("Sync counter ok");

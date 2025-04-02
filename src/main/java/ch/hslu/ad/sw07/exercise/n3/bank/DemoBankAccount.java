@@ -16,6 +16,9 @@
 package ch.hslu.ad.sw07.exercise.n3.bank;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -25,6 +28,8 @@ import org.slf4j.Logger;
 public final class DemoBankAccount {
 
     private static final Logger LOG = LoggerFactory.getLogger(DemoBankAccount.class);
+    private static final int numberOfThreads = Runtime.getRuntime().availableProcessors();
+
 
     /**
      * Privater Konstruktor.
@@ -41,15 +46,18 @@ public final class DemoBankAccount {
     public static void main(String[] args) throws InterruptedException {
         final ArrayList<BankAccount> source = new ArrayList<>();
         final ArrayList<BankAccount> target = new ArrayList<>();
-        final int amount = 100_000;
-        final int number = 5;
+        final int amount = 1_000_000;
+        final int number = 15;
         for (int i = 0; i < number; i++) {
             source.add(new BankAccount(amount));
             target.add(new BankAccount());
         }
         // Account Tasks starten...
-        if (true) {
-            throw new UnsupportedOperationException("Account Tasks starten...");
+        try (final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads)) {
+            for (int i = 0; i < number; i++) {
+                executor.submit(new AccountTask(source.get(i), target.get(i), amount));
+            }
+            executor.shutdown();
         }
         LOG.info("Bank accounts after transfers");
         for (int i = 0; i < number; i++) {

@@ -15,6 +15,8 @@
  */
 package ch.hslu.ad.sw07.exercise.n3.bank;
 
+import java.util.concurrent.Callable;
+
 /**
  * Bankauftrag, der der von einem Quell-Bankkonto einen Betrag an ein Ziel-Bankkonto überweist. Die
  * Überweisung wird in Mircoüberweisungen aufgeteilt.
@@ -27,6 +29,7 @@ public final class AccountTask implements Runnable {
 
     /**
      * Erzeugt ein Bankauftrag für eine Überweisung von einem Bankkonto auf ein anderes Bankkonto.
+     *
      * @param source Quell-Bankkonto
      * @param target Ziel-Bankkonto
      * @param amount zu überweisender Betrag
