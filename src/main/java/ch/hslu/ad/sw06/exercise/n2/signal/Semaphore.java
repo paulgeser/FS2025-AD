@@ -24,7 +24,7 @@ public final class Semaphore {
     private int sema; // Semaphorenzähler
     private int count; // Anzahl der wartenden Threads.
     private int limit; // maximum an möglichen Semaphoren
-    private static final int DEFAULT_LIMIT = 10;
+    private static final int DEFAULT_LIMIT = Integer.MAX_VALUE;
 
     /**
      * Erzeugt ein Semaphore mit 0 Passiersignalen.
@@ -98,7 +98,7 @@ public final class Semaphore {
         } else if (permits > limit) {
             throw new ArithmeticException("Requested permits exceeds the possible semaphore limit");
         }
-        while (permits > sema) {
+        while (sema == 0 || permits > sema) {
             count += permits;
             this.wait();
             count -= permits;
@@ -125,10 +125,11 @@ public final class Semaphore {
     public synchronized void release(final int permits) {
         if (permits < 1) {
             throw new IllegalArgumentException("Can not release semaphore less than 1");
-        } else if (permits > limit) {
+        } else if ((sema + permits) > limit) {
             throw new ArithmeticException("Requested releases of permits exceeds the possible semaphore limit");
         }
         sema += permits;
+        this.notifyAll();
     }
 
     /**

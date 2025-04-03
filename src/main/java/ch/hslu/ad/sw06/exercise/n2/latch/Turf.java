@@ -36,12 +36,22 @@ public final class Turf {
      * Main-Demo.
      * @param args not used.
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws InterruptedException {
+        // Synch starter box erstellen
         final Synch starterBox = new Latch();
+        // Threads starten für alle Pferde
         for (int i = 1; i <= HORSES; i++) {
             Thread.startVirtualThread(new RaceHorse(starterBox, "Horse " + i));
         }
+        // Warten bis sicher alle Pferde bereit sind zum laufen.
+        Thread.sleep(1000);
+
         LOG.info("Start...");
+        // Starte alle Pferde
         starterBox.release();
+
+        // Warte 4 Sekunden das Pferde Zeit haben ins Ziel zu laufen
+        Thread.sleep(4000);
+        // Sleep nötig, weil wenn Main terminiert, tun das auch alle virtuellen Threads
     }
 }

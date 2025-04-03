@@ -44,24 +44,37 @@ public final class DemoBankAccount {
      * @throws InterruptedException wenn Warten unterbrochen wird.
      */
     public static void main(String[] args) throws InterruptedException {
-        final ArrayList<BankAccount> source = new ArrayList<>();
-        final ArrayList<BankAccount> target = new ArrayList<>();
-        final int amount = 1_000_000;
-        final int number = 15;
-        for (int i = 0; i < number; i++) {
-            source.add(new BankAccount(amount));
-            target.add(new BankAccount());
-        }
-        // Account Tasks starten...
-        try (final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads)) {
+        long totalDuration = 0L;
+        int numberOfRuns = 25;
+        for (int y = 0; y <= numberOfRuns; y++) {
+            long startTime = System.nanoTime();
+            final ArrayList<BankAccount> source = new ArrayList<>();
+            final ArrayList<BankAccount> target = new ArrayList<>();
+            final int amount = 100_000_000;
+            final int number = 10;
             for (int i = 0; i < number; i++) {
-                executor.submit(new AccountTask(source.get(i), target.get(i), amount));
+                source.add(new BankAccount(amount));
+                target.add(new BankAccount());
             }
-            executor.shutdown();
+            // Account Tasks starten...
+            try (final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads)) {
+                for (int i = 0; i < number; i++) {
+                    executor.submit(new AccountTask(source.get(i), target.get(i), amount));
+                }
+                executor.shutdown();
+            }
+            long endTime = System.nanoTime();
+
+            /*LOG.info("Bank accounts after transfers");
+            for (int i = 0; i < number; i++) {
+                LOG.info("source({}) = {}; target({}) = {};", i, source.get(i).getBalance(), i, target.get(i).getBalance());
+            }*/
+            LOG.info("Duration: {}ms", (endTime - startTime) / 1000000L);
+            if (y != 0) {
+                totalDuration += (endTime - startTime) / 1000000L;
+            }
+
         }
-        LOG.info("Bank accounts after transfers");
-        for (int i = 0; i < number; i++) {
-            LOG.info("source({}) = {}; target({}) = {};", i, source.get(i).getBalance(), i, target.get(i).getBalance());
-        }
+        LOG.info("Average duration: {}ms", totalDuration / numberOfRuns);
     }
 }

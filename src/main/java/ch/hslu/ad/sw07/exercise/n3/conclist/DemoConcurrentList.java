@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -40,33 +41,43 @@ public final class DemoConcurrentList {
      * Main-Demo.
      *
      * @param args not used.
-     * @throws InterruptedException wenn das warten unterbrochen wird.
+     * @throws InterruptedException                    wenn das warten unterbrochen wird.
      * @throws java.util.concurrent.ExecutionException bei Excecution-Fehler.
      */
     public static void main(final String args[]) throws InterruptedException, ExecutionException {
         final Random random = new Random();
 
-        final List<Integer> list = Collections.synchronizedList(new LinkedList<>());
+        int numberOfRuns = 50;
+        long totalDuration = 0L;
+        for (int y = 0; y <= numberOfRuns; y++) {
+            final List<Integer> list = Collections.synchronizedList(new LinkedList<>());
 /*
         final List<Integer> list = new LinkedList<>();
 */
-        final List<Future<Long>> futures = new ArrayList<>();
-        try (final ExecutorService executor = Executors.newCachedThreadPool()) {
-            for (int i = 0; i < 5; i++) {
-                futures.add(executor.submit(new Producer(list, random.nextInt(1_000))));
+            final List<Future<Long>> futures = new ArrayList<>();
+            try (final ExecutorService executor = Executors.newCachedThreadPool()) {
+                long startTime = System.nanoTime();
+                for (int i = 0; i < 4000; i++) {
+                    futures.add(executor.submit(new Producer(list, random.nextInt(1_000))));
+                }
+                Iterator<Future<Long>> iterator = futures.iterator();
+                long totProd = 0;
+                while (iterator.hasNext()) {
+                    long sum = iterator.next().get();
+                    totProd += sum;
+                    //LOG.info("prod sum = " + sum);
+                }
+                //LOG.info("prod tot = " + totProd);
+                long totCons = executor.submit(new Consumer(list)).get();
+                long endTime = System.nanoTime();
+                //LOG.info("cons tot = " + totCons);
+                if (y != 0) {
+                    totalDuration += (endTime - startTime) / 1000000L;
+                }
+            } finally {
+                // Executor shutdown
             }
-            Iterator<Future<Long>> iterator = futures.iterator();
-            long totProd = 0;
-            while (iterator.hasNext()) {
-                long sum = iterator.next().get();
-                totProd += sum;
-                LOG.info("prod sum = " + sum);
-            }
-            LOG.info("prod tot = " + totProd);
-            long totCons = executor.submit(new Consumer(list)).get();
-            LOG.info("cons tot = " + totCons);
-        } finally {
-            // Executor shutdown
         }
+        LOG.info("Average duration: {}ms", totalDuration / numberOfRuns);
     }
 }

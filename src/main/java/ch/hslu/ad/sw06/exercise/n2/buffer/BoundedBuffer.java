@@ -80,7 +80,6 @@ public final class BoundedBuffer<T> implements Buffer<T> {
         if (!takeSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
             return null;
         }
-        ;
         T elem;
         synchronized (queue) {
             elem = queue.removeLast();

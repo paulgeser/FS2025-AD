@@ -54,5 +54,9 @@ public final class Turf {
 
         // Signal the race to start
         signalStart.countDown();
+
+        // Theoretisch mit einer count down latch lösbar
+        Thread.sleep(5000);
+
     }
 }
