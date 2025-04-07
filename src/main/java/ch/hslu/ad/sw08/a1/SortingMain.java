@@ -58,7 +58,7 @@ public class SortingMain {
             numbers[index2] = temp;
 
             // Zustand des Arrays anzeigen, 1s warten
-            SortingAnimation.instance().showArray(numbers, 1000);
+            SortingAnimation.instance().showArray(numbers, 50);
         }
 
         // Demo 2 - 10 mal zufälligen Index hervorheben
