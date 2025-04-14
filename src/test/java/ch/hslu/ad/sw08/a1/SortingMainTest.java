@@ -1,5 +1,6 @@
 package ch.hslu.ad.sw08.a1;
 
+import ch.hslu.ad.sw09.ClassicQuickSort;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -53,6 +54,22 @@ class SortingMainTest {
 
             // act
             int[] result = BubbleSort.sort(unOrderedArray);
+
+            // assert
+            checkSort(result);
+        }
+    }
+
+    @Test
+    public void testQuickSort() {
+        // Turn off gui
+        ClassicQuickSort.gui = false;
+        for (int i = 0; i < 3; i++) {
+            // arrange
+            int[] unOrderedArray = getShuffledNumbers(100);
+
+            // act
+            int[] result = ClassicQuickSort.sort(unOrderedArray);
 
             // assert
             checkSort(result);

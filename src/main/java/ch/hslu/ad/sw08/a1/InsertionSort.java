@@ -37,12 +37,13 @@ public class InsertionSort {
     }
 
     public static void main(String[] args) {
-        int[] numbers = getShuffledNumbers(50);
+        /*int[] numbers = getShuffledNumbers(50);
         InsertionSort.gui = true;
-        int[] test = sort(numbers);
+        int[] test = sort(numbers);*/
 /*
         testTime();
 */
+
     }
 
     public static void testTime() {
@@ -62,6 +63,14 @@ public class InsertionSort {
             }
             LOG.info("For {} elements it took on average {}ms", numArray[i], (totalTime / numberOfRuns));
         }
+    }
+
+    public static int[] getOrderedArray(int numbers) {
+        int[] array = new int[numbers];
+        for (int i = 1; i <= numbers; i++) {
+            array[i - 1] = i;
+        }
+        return array;
     }
 }
 

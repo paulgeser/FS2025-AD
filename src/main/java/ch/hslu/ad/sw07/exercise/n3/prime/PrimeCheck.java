@@ -16,11 +16,10 @@
 package ch.hslu.ad.sw07.exercise.n3.prime;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.LoggerFactory;
@@ -47,30 +46,42 @@ public final class PrimeCheck {
      * @param args not used.
      */
     public static void main(String[] args) {
-        final Callable<Boolean> primeTask = () -> {
+        final Callable<BigInteger> primeTask = () -> {
             boolean foundPrime = false;
+            BigInteger bi = null;
             while (!foundPrime) {
-                BigInteger bi = new BigInteger(1024, new Random());
+                bi = new BigInteger(1024, new Random());
                 if (bi.isProbablePrime(Integer.MAX_VALUE)) {
                     count.getAndIncrement();
                     foundPrime = true;
                     LOG.info("Found prime number ({})", count.get());
                 }
             }
-            return true;
+            return bi;
         };
 
         final int wantedPrimeNumbers = 100;
+        List<Future<BigInteger>> list = new ArrayList<>();
         while (count.get() < wantedPrimeNumbers) {
             try (final ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads)) {
 
                 for (int i = 0; i < wantedPrimeNumbers - count.get(); i++) {
-                    executor.submit(primeTask);
+                    Future<BigInteger> task = executor.submit(primeTask);
+                    list.add(task);
                 }
 
                 LOG.info("{}", count.get());
                 executor.shutdown();
+
+                for (Future<BigInteger> task : list) {
+                    task.get();
+                }
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
+
     }
 }

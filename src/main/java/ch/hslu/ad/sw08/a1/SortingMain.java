@@ -15,7 +15,7 @@ public class SortingMain {
      * @param size die Anzahl der Zahlen
      * 
      */
-    static int[] getShuffledNumbers(int size) {
+    public static int[] getShuffledNumbers(int size) {
         List<Integer> numbers = IntStream.range(1, size + 1).boxed().collect(Collectors.toList());
         Collections.shuffle(numbers);
         return numbers.stream().mapToInt(Integer::intValue).toArray();
