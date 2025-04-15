@@ -38,11 +38,11 @@ public class SelectionSort {
     }
 
     public static void main(String[] args) {
-        /*int[] numbers = getShuffledNumbers(50);
+        int[] numbers = getShuffledNumbers(50);
         SelectionSort.gui = true;
-        int[] test = sort(numbers);*/
+        int[] test = sort(numbers);
 
-        testTime();
+        /*testTime();*/
     }
 
     public static void testTime() {

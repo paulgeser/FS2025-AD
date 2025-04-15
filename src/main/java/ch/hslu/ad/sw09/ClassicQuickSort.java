@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static ch.hslu.ad.sw08.a1.InsertionSort.getOrderedArray;
 import static ch.hslu.ad.sw08.a1.SortingMain.getShuffledNumbers;
@@ -100,6 +101,7 @@ public class ClassicQuickSort {
         int pivot = array[start];
         int i = start - 1;
         int j = end + 1;
+        Collections.sort(null);
 
         while (true) {
             do {
@@ -130,17 +132,16 @@ public class ClassicQuickSort {
 
 
     public static void main(String[] args) {
-        /*int[] numbers = getShuffledNumbers(50);
+        int[] numbers = getShuffledNumbers(50);
         ClassicQuickSort.gui = true;
         int[] test = sort(numbers);
-        LOG.info("count {}", count);*/
-        /*int*/
+        LOG.info("count {}", count);
 
         /**/
         /*testTime();*/
 
-        sort(getOrderedArray(100));
-        LOG.info("{}", count);
+        /*sort(getOrderedArray(100));
+        LOG.info("{}", count);*/
     }
 
     public static void testTime() {

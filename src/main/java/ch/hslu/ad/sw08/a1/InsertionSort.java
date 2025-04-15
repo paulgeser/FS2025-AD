@@ -37,9 +37,9 @@ public class InsertionSort {
     }
 
     public static void main(String[] args) {
-        /*int[] numbers = getShuffledNumbers(50);
+        int[] numbers = getShuffledNumbers(50);
         InsertionSort.gui = true;
-        int[] test = sort(numbers);*/
+        int[] test = sort(numbers);
 /*
         testTime();
 */
