@@ -16,6 +16,7 @@
 package ch.hslu.ad.sw11.exercise.n4.findfile;
 
 import java.io.File;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -39,13 +40,34 @@ public final class FindFilePerformance {
      */
     public static void main(String[] args) {
         final String search = "find.me";
+        final int numberOfRuns = 5;
         final File rootDir = new File(System.getProperty("user.home"));
-        LOG.info("Start searching '{}' recurive in '{}'", search, rootDir);
-        FindFile.findFile(search, rootDir);
-        LOG.info("Found in {} msec.", '?');
-        LOG.info("Find '{}' concurrent in '{}'", search, rootDir);
-        final FindFileTask root = new FindFileTask(search, rootDir);
-        LOG.info(root.invoke());
-        LOG.info("Found in {} msec.", '?');
+        LOG.info(rootDir.getAbsolutePath());
+        long totalTime, startTime, endTime;
+
+        /*totalTime = 0;
+        for (int i = 0; i <= numberOfRuns; i++) {
+            //LOG.info("Start searching '{}' recurive in '{}'", search, rootDir);
+            startTime = System.nanoTime();
+            FindFile.findFile(search, rootDir);
+            endTime = System.nanoTime();
+            if (i != 0) {
+                totalTime += (endTime - startTime) / 1000000L;
+            }
+        }
+        LOG.info("Found in {} msec.", totalTime / numberOfRuns);*/
+
+        totalTime = 0;
+        for (int i = 0; i <= numberOfRuns; i++) {
+            //LOG.info("Find '{}' concurrent in '{}'", search, rootDir);
+            startTime = System.nanoTime();
+            final FindFileTask root = new FindFileTask(search, rootDir);
+            root.invoke();
+            endTime = System.nanoTime();
+            if (i != 0) {
+                totalTime += (endTime - startTime) / 1000000L;
+            }
+        }
+        LOG.info("Found in {} msec.", totalTime / numberOfRuns);
     }
 }

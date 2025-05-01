@@ -27,6 +27,8 @@ public final class FibonacciTask extends RecursiveTask<Long> {
      * Gegebene Zahl für die gesuchte Fibonacci Zahl.
      */
     private final int n;
+    private static final int THRESHOLD = 45;
+
 
     /**
      * Erzeugt einen Fibonacci Task.
@@ -39,6 +41,19 @@ public final class FibonacciTask extends RecursiveTask<Long> {
 
     @Override
     protected Long compute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (n > THRESHOLD) {
+            if (n > 1) {
+                FibonacciTask left  = new FibonacciTask(n - 1);
+                FibonacciTask right = new FibonacciTask(n - 2);
+                left.fork();
+                Long rRight = right.compute();
+                Long rLeft  = left.join();
+                return rLeft + rRight;
+            } else {
+                return Long.valueOf(n);
+            }
+        } else {
+            return FibonacciCalc.fiboRecursive(n);
+        }
     }
 }

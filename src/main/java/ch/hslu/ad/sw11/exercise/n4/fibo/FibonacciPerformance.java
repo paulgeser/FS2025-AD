@@ -37,17 +37,46 @@ public final class FibonacciPerformance {
      * @param args not used.
      */
     public static void main(final String[] args) {
-        final int n = 42;
-        final FibonacciTask task = new FibonacciTask(n);
-        LOG.info("fibo({}) start...", n);
-        long result = task.invoke();
-        LOG.info("Conc. recursive = {}", result);
-        LOG.info("Conc. recursive : {} msec.", '?');
-        result = FibonacciCalc.fiboIterative(n);
-        LOG.info("Func. iterative = {}", result);
-        LOG.info("Func. iterative : {} msec.", '?');
-        result = FibonacciCalc.fiboRecursive(n);
-        LOG.info("Func. recursive = {}", result);
-        LOG.info("Func. recursive : {} sec.", '?');
+        final int n = 50;
+        final int numberOfRuns = 5;
+        long totalTime, startTime, endTime, result;
+
+        totalTime = 0;
+        for (int i = 0; i <= numberOfRuns; i++) {
+            startTime = System.nanoTime();
+            final FibonacciTask task = new FibonacciTask(n);
+            //LOG.info("fibo({}) start...", n);
+            result = task.invoke();
+            endTime = System.nanoTime();
+            if (i != 0) {
+                totalTime += (endTime - startTime) / 1000000L;
+            }
+            // LOG.info("Conc. recursive = {}", result);
+        }
+        LOG.info("Conc. recursive : {} msec.", totalTime / numberOfRuns);
+/*
+        totalTime = 0;
+        for (int i = 0; i <= numberOfRuns; i++) {
+            startTime = System.nanoTime();
+            result = FibonacciCalc.fiboIterative(n);
+            endTime = System.nanoTime();
+            if (i != 0) {
+                totalTime += (endTime - startTime) / 1000000L;
+            }
+            // LOG.info("Func. iterative = {}", result);
+        }
+        LOG.info("Func. iterative : {} msec.", totalTime / numberOfRuns);
+
+        totalTime = 0;
+        for (int i = 0; i <= numberOfRuns; i++) {
+            startTime = System.nanoTime();
+            result = FibonacciCalc.fiboRecursive(n);
+            endTime = System.nanoTime();
+            if (i != 0) {
+                totalTime += (endTime - startTime) / 1000000L;
+            }
+            // LOG.info("Func. recursive = {}", result);
+        }
+        LOG.info("Func. recursive : {} msec.", totalTime / numberOfRuns);*/
     }
 }

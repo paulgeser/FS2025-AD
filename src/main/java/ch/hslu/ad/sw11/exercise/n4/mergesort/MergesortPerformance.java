@@ -51,7 +51,7 @@ public final class MergesortPerformance {
             pool.invoke(initTask);
             int[] array;
 
-/*            totalTime = 0;
+            totalTime = 0;
             for (int i = 0; i <= numberOfRuns; i++) {
                 array = Arrays.copyOf(arrayOriginal, size);
                 startTime = System.nanoTime();
@@ -62,8 +62,7 @@ public final class MergesortPerformance {
                     totalTime += (endTime - startTime) / 1000000L;
                 }
             }
-            LOG.info("Conc. Mergesort avg. : {} msec.", totalTime / numberOfRuns);*/
-/*
+            LOG.info("Conc. Mergesort avg. : {} msec.", totalTime / numberOfRuns);
 
             totalTime = 0;
             for (int i = 0; i <= numberOfRuns; i++) {
@@ -76,7 +75,6 @@ public final class MergesortPerformance {
                 }
             }
             LOG.info("MergesortRec. avg.   : {} msec.", totalTime / numberOfRuns);
-*/
             totalTime = 0;
             for (int i = 0; i <= numberOfRuns; i++) {
                 array = Arrays.copyOf(arrayOriginal, size);
