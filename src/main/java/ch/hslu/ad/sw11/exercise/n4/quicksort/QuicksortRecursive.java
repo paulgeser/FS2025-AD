@@ -15,6 +15,8 @@
  */
 package ch.hslu.ad.sw11.exercise.n4.quicksort;
 
+import ch.hslu.ad.sw08.a1.animation.SortingAnimation;
+
 /**
  * Codevorlage zu RecursiveAction für die Sortierung eines int-Arrays.
  */
@@ -39,12 +41,16 @@ public final class QuicksortRecursive {
     /**
      * Recursive quicksort logic.
      *
-     * @param array input array.
+     * @param array    input array.
      * @param startIdx start index of the array.
-     * @param endIdx end index of the array.
+     * @param endIdx   end index of the array.
      */
     public static void quicksort(int[] array, int startIdx, int endIdx) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (startIdx < endIdx) {
+            int p = partition(array, startIdx, endIdx);
+            quicksort(array, startIdx, p);
+            quicksort(array, p + 1, endIdx);
+        }
     }
 
     /**
@@ -52,12 +58,33 @@ public final class QuicksortRecursive {
      * while right side contains elements greater than pivot.
      *
      * @param array array to partitioned.
-     * @param left lower bound of the array.
+     * @param left  lower bound of the array.
      * @param right upper bound of the array.
      * @return the partition index.
      */
     public static int partition(int[] array, int left, int right) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int pivot = array[left];
+        int i = left - 1;
+        int j = right + 1;
+
+        while (true) {
+            do {
+                i++;
+            } while (array[i] < pivot);
+
+            do {
+                j--;
+            } while (array[j] > pivot);
+
+            if (i >= j) {
+                return j;
+            }
+
+            // Swap elements
+            int temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
     }
 
     private static void exchange(final int[] array, final int i, final int j) {

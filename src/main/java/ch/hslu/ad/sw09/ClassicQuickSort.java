@@ -101,7 +101,6 @@ public class ClassicQuickSort {
         int pivot = array[start];
         int i = start - 1;
         int j = end + 1;
-        Collections.sort(null);
 
         while (true) {
             do {
@@ -133,6 +132,7 @@ public class ClassicQuickSort {
 
     public static void main(String[] args) {
         int[] numbers = getShuffledNumbers(50);
+        LOG.info("{}", numbers);
         ClassicQuickSort.gui = true;
         int[] test = sort(numbers);
         LOG.info("count {}", count);

@@ -23,7 +23,7 @@ import java.util.concurrent.RecursiveAction;
 @SuppressWarnings("serial")
 public final class QuicksortTask extends RecursiveAction {
 
-    private static final int THRESHOLD = 1;
+    private static final int THRESHOLD = 50;
     /**
      * Zu sortierendes Array.
      */
@@ -54,6 +54,17 @@ public final class QuicksortTask extends RecursiveAction {
 
     @Override
     protected void compute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (min < max) {
+            if (max - min > THRESHOLD) {
+                int p = QuicksortRecursive.partition(array, min, max);
+                final QuicksortTask taskLeft = new QuicksortTask(array, min, p);
+                taskLeft.fork();
+                final QuicksortTask taskRight = new QuicksortTask(array, p + 1, max);
+                taskRight.compute();
+                taskLeft.join();
+            } else {
+                InsertionSort.sort(array, min, max);
+            }
+        }
     }
 }
