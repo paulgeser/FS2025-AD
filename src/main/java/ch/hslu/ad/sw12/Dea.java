@@ -13,10 +13,27 @@ public class Dea {
 
     public static void main(String[] args) {
         LOG.info("Class works");
+        String testString = "";
+        testString = "0";
+        LOG.info("Result for '{}' should be 'true' and is '{}'", testString, isWordLanguage(testString));
+        testString = "1";
+        LOG.info("Result for '{}' should be 'false' and is '{}'", testString, isWordLanguage(testString));
+        testString = "010";
+        LOG.info("Result for '{}' should be 'true' and is '{}'", testString, isWordLanguage(testString));
+        testString = "011";
+        LOG.info("Result for '{}' should be 'false' and is '{}'", testString, isWordLanguage(testString));
+        testString = "01110";
+        LOG.info("Result for '{}' should be 'true' and is '{}'", testString, isWordLanguage(testString));
+        testString = "0110";
+        LOG.info("Result for '{}' should be 'false' and is '{}'", testString, isWordLanguage(testString));
+        testString = "0111010";
+        LOG.info("Result for '{}' should be 'true' and is '{}'", testString, isWordLanguage(testString));
+        testString = "010101010111011111110";
+        LOG.info("Result for '{}' should be 'true' and is '{}'", testString, isWordLanguage(testString));
     }
 
     public static boolean isWordLanguage(final String s) {
-        Pattern p = Pattern.compile("[a-z]");
+        Pattern p = Pattern.compile("^0(1(11)*0)*$");
         Matcher m = p.matcher(s);
         return m.find();
     }
