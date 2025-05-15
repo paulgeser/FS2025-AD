@@ -33,8 +33,6 @@ public class Dea {
     }
 
     public static boolean isWordLanguage(final String s) {
-        Pattern p = Pattern.compile("^0(1(11)*0)*$");
-        Matcher m = p.matcher(s);
-        return m.find();
+        return (Pattern.compile("^0(1(11)*0)*$").matcher(s)).find();
     }
 }
