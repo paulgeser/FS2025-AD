@@ -1,4 +1,5 @@
-This data was imported from Github BedaPub Besca and the owner ship does not belong to this repository. Just used for test case in testing:
+This data was imported from Github BedaPub Besca and the owner ship does not belong to this repository. Just used for testing
+Reference to repository: https://github.com/bedapub/besca
 #1.2
 14969	5
 NAME	Description	natural killer cell	myeloid leukocyte	T cell	erythrocyte	lymphocyte of B lineage
