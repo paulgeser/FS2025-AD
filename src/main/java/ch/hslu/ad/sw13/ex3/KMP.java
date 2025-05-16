@@ -19,4 +19,27 @@ public class KMP {
         }
         return randTabelleResult;
     }
+
+    public static int kmpSearch(final String text, String pattern) {
+        int[] tabelle = randTabelle(pattern);
+        int j = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+
+            while (j > 0 && text.charAt(i) != pattern.charAt(j)) {
+                j = tabelle[j - 1];
+            }
+
+
+            if (text.charAt(i) == pattern.charAt(j)) {
+                j++;
+            }
+
+            if (j == pattern.length()) {
+                return i - j + 1;
+            }
+        }
+
+        return -1;
+    }
 }
