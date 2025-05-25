@@ -8,15 +8,17 @@ import java.util.List;
 public class RailwayNet {
     private int numberOfStations;
     private String[] stations;
-    private int[][] adjaMx;
+    private final int[][] adjaMx;
     private static final int MAX = Integer.MAX_VALUE;
     private final int numberOfEdges;
+    private final int[][] bestConnectionMatrix;
 
     RailwayNet(final String[] stations, final int[][] adjaMx) {
         this.numberOfStations = stations.length;
         this.stations = stations;
         this.adjaMx = adjaMx;
         this.numberOfEdges = this.calcNumberOfEdges(adjaMx);
+        this.bestConnectionMatrix = this.floydWarshall(adjaMx);
     }
 
     public String getStationName(final int k) {
@@ -74,8 +76,34 @@ public class RailwayNet {
         return connection;
     }
 
-    public int isEdge(final int i, final int j) {
-        return adjaMx[i][j];
+    public int getBestConnectionTime(final String station1, final String station2) {
+        int index1 = Arrays.asList(stations).indexOf(station1);
+        int index2 = Arrays.asList(stations).indexOf(station2);
+        if (index1 == -1 || index2 == -1) {
+            throw new InputMismatchException("Incorrect stations were given");
+        }
+        if (index1 == index2) {
+            throw new InputMismatchException("The station both input stations are the same");
+        }
+        return bestConnectionMatrix[index1][index2];
+    }
+
+    private static int[][] floydWarshall(int[][] adja) {
+        int nodeCount = adja.length;
+        int[][] distance = deepCopy(adja);
+        for (int k = 0; k < nodeCount; k++) {
+            for (int i = 0; i < nodeCount; i++) {
+                for (int j = 0; j < nodeCount; j++) {
+                    if (distance[i][k] < Integer.MAX_VALUE &&
+                            distance[k][j] < Integer.MAX_VALUE &&
+                            distance[i][k] + distance[k][j] < distance[i][j]) {
+                        distance[i][j] = distance[i][k] + distance[k][j];
+                    }
+                }
+            }
+        }
+
+        return distance;
     }
 
     private int calcNumberOfEdges(final int[][] matrix) {
@@ -88,5 +116,16 @@ public class RailwayNet {
             }
         }
         return count / 2;
+    }
+
+    private static int[][] deepCopy(final int[][] original) {
+        if (original == null) {
+            return null;
+        }
+        final int[][] result = new int[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
     }
 }

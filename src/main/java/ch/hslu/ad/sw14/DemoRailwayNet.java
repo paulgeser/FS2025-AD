@@ -27,7 +27,7 @@ public class DemoRailwayNet {
         System.out.println(network.checkConnection("Olten", "Aarau"));
         System.out.println(network.checkConnection("Olten", "Brugg"));
         System.out.println(network.checkConnection("Olten", "Lenzburg"));
-        System.out.println(network.findDirectConnections("Olten"));
-        System.out.println(network.getConnectionTime("Olten", "Aarau"));
+        System.out.println(network.findDirectConnections("Lenzburg"));
+        System.out.println(network.getBestConnectionTime("Zürich", "Luzern"));
     }
 }
